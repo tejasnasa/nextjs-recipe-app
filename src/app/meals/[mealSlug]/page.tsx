@@ -9,8 +9,8 @@ interface MealDetailsPageProps {
   };
 }
 
-export default function MealDetailsPage({ params }: MealDetailsPageProps) {
-  const meal = getMeal(params.mealSlug);
+export default async function MealDetailsPage({ params }: MealDetailsPageProps) {
+  const meal = await getMeal(params.mealSlug);
 
   if (!meal) {
     notFound();
