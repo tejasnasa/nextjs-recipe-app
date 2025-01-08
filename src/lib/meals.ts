@@ -35,7 +35,7 @@ export function getMeal(slug: string) {
   const data: unknown = db
     .prepare("SELECT * FROM meals WHERE slug = ?")
     .get(slug);
-  return data as MealType;
+  return data as MealType | null;
 }
 
 export async function saveMeal(mealx: InitMealType) {
