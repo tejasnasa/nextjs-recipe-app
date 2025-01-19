@@ -3,7 +3,18 @@ import slugify from "slugify";
 import xss from "xss";
 import fs from "node:fs";
 
-interface MealType {
+interface GetMealType {
+  id: string;
+  title: string;
+  image: string;
+  summary: string;
+  creator: string;
+  creator_email: string;
+  instructions: string;
+  slug: string;
+}
+
+interface SaveMealType {
   title: string;
   image: string;
   summary: string;
@@ -28,18 +39,18 @@ export async function getMeals() {
   await new Promise((resolve) => setTimeout(resolve, 2000));
   // throw error("Loading meals failed");
   const data: unknown[] = db.prepare("SELECT * FROM meals").all();
-  return data as MealType[];
+  return data as GetMealType[];
 }
 
 export function getMeal(slug: string) {
   const data: unknown = db
     .prepare("SELECT * FROM meals WHERE slug = ?")
     .get(slug);
-  return data as MealType | null;
+  return data as SaveMealType | null;
 }
 
 export async function saveMeal(mealx: InitMealType) {
-  const meal: MealType = {
+  const meal: SaveMealType = {
     title: mealx.title,
     image: "",
     summary: mealx.summary,
