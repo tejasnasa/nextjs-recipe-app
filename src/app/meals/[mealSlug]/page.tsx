@@ -4,13 +4,26 @@ import { getMeal } from "@/lib/meals";
 import { notFound } from "next/navigation";
 
 interface MealDetailsPageProps {
-  params: {
-    mealSlug: string;
+  params: Promise<{ mealSlug: string }>;
+}
+
+export async function generateMetadata({ params }: MealDetailsPageProps) {
+  const meal = getMeal((await params).mealSlug);
+
+  if (!meal) {
+    notFound();
+  }
+
+  return {
+    title: meal?.title,
+    description: meal?.summary,
   };
 }
 
-export default function MealDetailsPage({ params }: MealDetailsPageProps) {
-  const meal = getMeal(params.mealSlug);
+export default async function MealDetailsPage({
+  params,
+}: MealDetailsPageProps) {
+  const meal = getMeal((await params).mealSlug);
 
   if (!meal) {
     notFound();
